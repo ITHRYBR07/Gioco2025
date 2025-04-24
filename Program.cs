@@ -22,6 +22,9 @@ namespace OrtoPulito
 
         static bool mouseTenutoPremuto = false;
 
+        static bool dragging = false;
+        static Vector2f offset;
+        static Sprite spriteDaTrascinare; 
 
         static void Main(string[] args)
         {
@@ -199,6 +202,45 @@ namespace OrtoPulito
                 else
                 {
                     mouseTenutoPremuto = false;
+                }
+
+                if (Mouse.IsButtonPressed(Mouse.Button.Left))
+                {
+                        if (!mouseTenutoPremuto)
+                        {
+                                if (pala.GetGlobalBounds().Contains(mouseworldposition.X, mouseworldposition.Y))
+                                {
+                                        dragging = true;
+                                        spriteDaTrascinare = pala;
+                                        offset = mouseworldposition - spriteDaTrascinare.Position;
+                                }
+                                else if (acqua.GetGlobalBounds().Contains(mouseworldposition.X, mouseworldposition.Y))
+                                {
+                                        dragging = true;
+                                        spriteDaTrascinare = acqua;
+                                        offset = mouseworldposition - acqua.Position;
+                                }
+                                else if (aratro.GetGlobalBounds().Contains(mouseworldposition.X, mouseworldposition.Y))
+                                {
+                                        dragging = true;
+                                        spriteDaTrascinare = aratro;
+                                        offset = mouseworldposition - aratro.Position;
+                                }
+                            
+                                mouseTenutoPremuto = true;
+                        }
+
+    
+                        if (dragging && spriteDaTrascinare != null)
+                        {
+                                spriteDaTrascinare.Position = mouseworldposition - offset;
+                        }
+                }
+                else
+                {
+                        dragging = false;
+                        mouseTenutoPremuto = false;
+                        spriteDaTrascinare = null;
                 }
 
 
